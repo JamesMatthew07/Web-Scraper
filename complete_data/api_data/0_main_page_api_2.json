@@ -1,0 +1,31 @@
+{
+  "url": "https://eu-meicepro-api.meiquc.cn/meicepro-api/open/appLanguage/queryByShopList",
+  "method": "POST",
+  "status": 200,
+  "response": {
+    "code": 200,
+    "datas": [
+      {
+        "appCode": "0",
+        "appName": null,
+        "countryCode": "IT",
+        "createTime": "2026-02-05 10:52:22+08",
+        "createUser": "18045660-70b7-479d-9487-f1cf0b2a5639",
+        "createUserName": null,
+        "id": "70a7eac5-e879-4799-9525-f7fcd88237e2",
+        "language": "it",
+        "languageCode": "it",
+        "languageName": "Italiano",
+        "remark": null,
+        "scriptCode": "",
+        "sort": 9,
+        "status": 1,
+        "templateType": 2,
+        "templateUrl": "https://meice-meicepro-oss-ap-southeast-1.oss-ap-southeast-1.aliyuncs.com/0/8fab77f3972a4fd786b7149a6b91e321.xlsx"
+      }
+    ],
+    "message": "SUCCESS",
+    "status": "S"
+  },
+  "timestamp": "2026-02-05T20:26:01.520080"
+}

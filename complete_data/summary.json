@@ -1,0 +1,22 @@
+{
+  "scrape_timestamp": "2026-02-05T20:26:53.516404",
+  "target_url": "https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it",
+  "total_sections": 3,
+  "files": {
+    "data": [
+      "0_Main_Page.json",
+      "1_Aging_Level.json",
+      "2_Skin_Analysis.json"
+    ],
+    "screenshots": [
+      "0_Main_Page.png",
+      "1_Aging_Level.png",
+      "2_Skin_Analysis.png"
+    ],
+    "api_data": [
+      "0_main_page_api_1.json",
+      "0_main_page_api_2.json",
+      "0_main_page_api_3.json"
+    ]
+  }
+}

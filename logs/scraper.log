@@ -1,0 +1,32 @@
+2026-02-05 19:57:39,491 - DashboardScraper - INFO - Starting scrape of: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 19:57:39,491 - DashboardScraper - INFO - ============================================================
+2026-02-05 19:57:39,491 - DashboardScraper - INFO - Initializing browser...
+2026-02-05 19:57:39,945 - DashboardScraper - INFO - Loading page: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 19:57:54,952 - DashboardScraper - INFO - Detecting navigation elements...
+2026-02-05 19:57:54,990 - DashboardScraper - INFO - Detected: 0 tabs, pagination: False, 0 expandable sections, 0 dropdowns
+2026-02-05 19:57:54,990 - DashboardScraper - INFO - No tabs detected, scraping single page view
+2026-02-05 19:57:54,991 - DashboardScraper - INFO - Scraping view 1: "Main View"
+2026-02-05 19:57:56,045 - DashboardScraper - INFO -   └─ Extracted 0 tables, 1 text sections, 0 metrics
+2026-02-05 19:57:56,560 - DashboardScraper - INFO -   └─ Screenshot saved: page_1_Main_View.png
+2026-02-05 19:57:56,562 - DashboardScraper - INFO - 
+Summary report saved to: output/summary.json
+2026-02-05 19:57:56,562 - DashboardScraper - INFO - ============================================================
+2026-02-05 19:57:56,562 - DashboardScraper - INFO - Scraping complete!
+2026-02-05 19:57:56,562 - DashboardScraper - INFO - Summary: 1 views scraped, 0 tables extracted, 0 data points
+2026-02-05 19:57:56,588 - DashboardScraper - INFO - Browser closed
+2026-02-05 20:01:44,486 - DashboardScraper - INFO - Starting scrape of: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 20:01:44,487 - DashboardScraper - INFO - ============================================================
+2026-02-05 20:01:44,487 - DashboardScraper - INFO - Initializing browser...
+2026-02-05 20:01:45,934 - DashboardScraper - INFO - Loading page: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 20:02:00,461 - DashboardScraper - INFO - Detecting navigation elements...
+2026-02-05 20:02:00,503 - DashboardScraper - INFO - Detected: 0 tabs, pagination: False, 0 expandable sections, 0 dropdowns
+2026-02-05 20:02:00,503 - DashboardScraper - INFO - No tabs detected, scraping single page view
+2026-02-05 20:02:00,503 - DashboardScraper - INFO - Scraping view 1: "Main View"
+2026-02-05 20:02:01,540 - DashboardScraper - INFO -   └─ Extracted 0 tables, 1 text sections, 0 metrics
+2026-02-05 20:02:01,964 - DashboardScraper - INFO -   └─ Screenshot saved: page_1_Main_View.png
+2026-02-05 20:02:01,965 - DashboardScraper - INFO - 
+Summary report saved to: output/summary.json
+2026-02-05 20:02:01,965 - DashboardScraper - INFO - ============================================================
+2026-02-05 20:02:01,965 - DashboardScraper - INFO - Scraping complete!
+2026-02-05 20:02:01,965 - DashboardScraper - INFO - Summary: 1 views scraped, 0 tables extracted, 0 data points
+2026-02-05 20:02:02,063 - DashboardScraper - INFO - Browser closed
