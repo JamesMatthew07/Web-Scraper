@@ -20,6 +20,154 @@ logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
 
+def parse_structured_data(text, section_name):
+    """Parse raw text into structured data"""
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+
+    if section_name == "Main_Page":
+        # Parse main page header info
+        info = {}
+        for line in lines:
+            if 'algoritmo' in line.lower():
+                info['algorithm_version'] = line.split(':')[1].strip() if ':' in line else line
+            elif any(char.isdigit() for char in line) and '-' in line and ':' in line:
+                info['date'] = line
+            elif line not in ['Livello di Invecchiamento', 'Visualizza di più', 'Analisi della Pelle', '']:
+                if 'customer_name' not in info and not line[0].isdigit():
+                    info['customer_name'] = line
+
+        return info
+
+    # For detail pages, organize into sections
+    sections = []
+    current_section = None
+
+    # Keywords that indicate section boundaries
+    section_keywords = [
+        'Rughe della Fronte', 'Rughe Glabellari', 'Rughe Interoculari',
+        'Pieghe Nasolabiali', 'Rughe della Marionetta', 'Rughe Periorbitali',
+        'Macchie Marroni', 'Pori', 'Porfirina', 'Macchie Superficiali',
+        'Texture', 'Macchie Solari', 'Zone Reattive'
+    ]
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+
+        # Check if this is a section header
+        is_section_header = any(keyword in line for keyword in section_keywords)
+
+        if is_section_header and (i + 1 >= len(lines) or 'Livello' in lines[i + 1] or 'Punteggio' in lines[i + 1] or lines[i + 1].replace('.', '').isdigit()):
+            # Save previous section
+            if current_section and (current_section.get('metrics') or current_section.get('causes') or current_section.get('care_suggestions')):
+                sections.append(current_section)
+
+            # Start new section
+            current_section = {
+                'category': line,
+                'score': None,
+                'severity': None,
+                'metrics': {},
+                'causes': [],
+                'care_suggestions': []
+            }
+
+            # Get score/level from next line
+            if i + 1 < len(lines):
+                next_line = lines[i + 1]
+                if 'Livello' in next_line or 'Punteggio' in next_line:
+                    score_part = next_line.replace('Livello', '').replace('Punteggio', '').strip()
+                    if score_part:
+                        current_section['score'] = score_part
+                    i += 2
+                    continue
+                elif next_line.replace('.', '').replace(',', '').isdigit():
+                    current_section['score'] = next_line
+                    i += 2
+                    continue
+
+            i += 1
+            continue
+
+        # Get severity
+        if current_section and line in ['Livello di Invecchiamento', 'Gravità dei Sintomi']:
+            if i + 1 < len(lines):
+                current_section['severity'] = lines[i + 1]
+                i += 2
+            continue
+
+        # Parse wrinkle type metrics
+        # Pattern: CategoryName -> Value -> Label -> Value -> Label -> ...
+        wrinkle_types = ['Rughe Sottili', 'Rughe Poco Profonde', 'Rughe Medie', 'Rughe Profonde',
+                        'Pori Piccoli', 'Pori Medi', 'Pori Grandi', 'Lieve', 'Moderato', 'Grave']
+
+        if line in wrinkle_types:
+            category = line
+            metrics_group = {}
+            i += 1
+
+            # Collect metrics for this category
+            # Pattern is: value, then label (e.g., "23", "Quantità", "8.7mm²", "Area")
+            while i < len(lines):
+                # Check if next line is a label
+                if i + 1 < len(lines) and lines[i + 1] in ['Quantità', 'Area', 'Percentuale di Area']:
+                    value = lines[i]
+                    label = lines[i + 1]
+                    metrics_group[label] = value
+                    i += 2
+                # Check if current line is a wrinkle type (start of next category)
+                elif lines[i] in wrinkle_types:
+                    break
+                # Check if we hit causes/suggestions
+                elif lines[i] in ['Causa della Formazione', 'Suggerimenti per la Cura']:
+                    break
+                # Check if we hit a new section
+                elif any(keyword in lines[i] for keyword in section_keywords):
+                    break
+                else:
+                    i += 1
+                    break
+
+            if metrics_group:
+                current_section['metrics'][category] = metrics_group
+            continue
+
+        # Parse causes
+        if line == 'Causa della Formazione':
+            i += 1
+            while i < len(lines):
+                next_line = lines[i]
+                if next_line in ['Suggerimenti per la Cura'] or any(keyword in next_line for keyword in section_keywords):
+                    break
+                if next_line.strip():
+                    current_section['causes'].append(next_line)
+                i += 1
+            continue
+
+        # Parse care suggestions
+        if line == 'Suggerimenti per la Cura':
+            i += 1
+            while i < len(lines):
+                next_line = lines[i]
+                if any(keyword in next_line for keyword in section_keywords):
+                    break
+                if next_line.strip():
+                    current_section['care_suggestions'].append(next_line)
+                i += 1
+            continue
+
+        i += 1
+
+    # Add last section
+    if current_section and (current_section.get('metrics') or current_section.get('causes') or current_section.get('care_suggestions')):
+        sections.append(current_section)
+
+    return {
+        'total_categories': len(sections),
+        'categories': sections
+    }
+
+
 async def extract_section(page, section_name, section_num, output_dir):
     """Extract data from current page"""
     logger.info(f"\n📊 Extracting: {section_name}")
@@ -34,13 +182,16 @@ async def extract_section(page, section_name, section_num, output_dir):
     text = await body.inner_text() if body else ""
     html = await page.content()
 
+    # Parse into structured format
+    structured_data = parse_structured_data(text, section_name)
+
     data = {
         'section_name': section_name,
         'section_number': section_num,
         'url': page.url,
         'timestamp': datetime.now().isoformat(),
-        'text_content': text,
-        'text_length': len(text),
+        'data': structured_data,
+        'raw_text_length': len(text),
         'html_length': len(html)
     }
 

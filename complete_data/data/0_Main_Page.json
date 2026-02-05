@@ -2,8 +2,12 @@
   "section_name": "Main_Page",
   "section_number": 0,
   "url": "https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it",
-  "timestamp": "2026-02-05T20:26:09.643203",
-  "text_content": "Versione dell'algoritmo:1.0.0\n\nMichela zallocco\n\n2026-01-26 20:56:37\n\nLivello di Invecchiamento\nVisualizza di più\n\n4.0\n-\n-\n0.1\n1.0\n4.0\n4.0\n1.1\n1.1\n2.7\n2.7\n1.0\n1.0\n1.0\n2.3Livello\nAnalisi della Pelle\nVisualizza di più\n",
-  "text_length": 218,
+  "timestamp": "2026-02-05T20:44:59.663858",
+  "data": {
+    "algorithm_version": "1.0.0",
+    "customer_name": "Michela zallocco",
+    "date": "2026-01-26 20:56:37"
+  },
+  "raw_text_length": 218,
   "html_length": 141345
 }
