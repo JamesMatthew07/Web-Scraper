@@ -14,9 +14,20 @@ from playwright.async_api import async_playwright
 
 TARGET_URL = 'https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it'
 OUTPUT_DIR = Path('./complete_data')
+LOG_DIR = Path('./logs')
 TIMEOUT = 60000
 
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+# Setup logging to both console and file
+LOG_DIR.mkdir(exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.FileHandler(LOG_DIR / 'scraper.log', mode='w', encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger(__name__)
 
 

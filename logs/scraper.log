@@ -1,32 +1,55 @@
-2026-02-05 19:57:39,491 - DashboardScraper - INFO - Starting scrape of: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
-2026-02-05 19:57:39,491 - DashboardScraper - INFO - ============================================================
-2026-02-05 19:57:39,491 - DashboardScraper - INFO - Initializing browser...
-2026-02-05 19:57:39,945 - DashboardScraper - INFO - Loading page: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
-2026-02-05 19:57:54,952 - DashboardScraper - INFO - Detecting navigation elements...
-2026-02-05 19:57:54,990 - DashboardScraper - INFO - Detected: 0 tabs, pagination: False, 0 expandable sections, 0 dropdowns
-2026-02-05 19:57:54,990 - DashboardScraper - INFO - No tabs detected, scraping single page view
-2026-02-05 19:57:54,991 - DashboardScraper - INFO - Scraping view 1: "Main View"
-2026-02-05 19:57:56,045 - DashboardScraper - INFO -   └─ Extracted 0 tables, 1 text sections, 0 metrics
-2026-02-05 19:57:56,560 - DashboardScraper - INFO -   └─ Screenshot saved: page_1_Main_View.png
-2026-02-05 19:57:56,562 - DashboardScraper - INFO - 
-Summary report saved to: output/summary.json
-2026-02-05 19:57:56,562 - DashboardScraper - INFO - ============================================================
-2026-02-05 19:57:56,562 - DashboardScraper - INFO - Scraping complete!
-2026-02-05 19:57:56,562 - DashboardScraper - INFO - Summary: 1 views scraped, 0 tables extracted, 0 data points
-2026-02-05 19:57:56,588 - DashboardScraper - INFO - Browser closed
-2026-02-05 20:01:44,486 - DashboardScraper - INFO - Starting scrape of: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
-2026-02-05 20:01:44,487 - DashboardScraper - INFO - ============================================================
-2026-02-05 20:01:44,487 - DashboardScraper - INFO - Initializing browser...
-2026-02-05 20:01:45,934 - DashboardScraper - INFO - Loading page: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
-2026-02-05 20:02:00,461 - DashboardScraper - INFO - Detecting navigation elements...
-2026-02-05 20:02:00,503 - DashboardScraper - INFO - Detected: 0 tabs, pagination: False, 0 expandable sections, 0 dropdowns
-2026-02-05 20:02:00,503 - DashboardScraper - INFO - No tabs detected, scraping single page view
-2026-02-05 20:02:00,503 - DashboardScraper - INFO - Scraping view 1: "Main View"
-2026-02-05 20:02:01,540 - DashboardScraper - INFO -   └─ Extracted 0 tables, 1 text sections, 0 metrics
-2026-02-05 20:02:01,964 - DashboardScraper - INFO -   └─ Screenshot saved: page_1_Main_View.png
-2026-02-05 20:02:01,965 - DashboardScraper - INFO - 
-Summary report saved to: output/summary.json
-2026-02-05 20:02:01,965 - DashboardScraper - INFO - ============================================================
-2026-02-05 20:02:01,965 - DashboardScraper - INFO - Scraping complete!
-2026-02-05 20:02:01,965 - DashboardScraper - INFO - Summary: 1 views scraped, 0 tables extracted, 0 data points
-2026-02-05 20:02:02,063 - DashboardScraper - INFO - Browser closed
+2026-02-05 20:52:06 [INFO] ================================================================================
+2026-02-05 20:52:06 [INFO] 🎯 COMPLETE DASHBOARD SCRAPER
+2026-02-05 20:52:06 [INFO] ================================================================================
+2026-02-05 20:52:07 [INFO] 
+📄 Loading: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 20:52:19 [INFO] 
+📊 Extracting: Main_Page
+2026-02-05 20:52:22 [INFO]   ✓ Text: 218 chars
+2026-02-05 20:52:22 [INFO]   ✓ URL: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/report?id=5111c64f-88bd-49de-81d2-700916ef7750&language=it
+2026-02-05 20:52:22 [INFO]   ✓ Saved: 0_Main_Page.json
+2026-02-05 20:52:22 [INFO]   ✓ Captured 3 API requests from main page
+2026-02-05 20:52:23 [INFO] 
+✅ Found 4 clickable 'Visualizza di più' elements
+2026-02-05 20:52:23 [INFO] 
+======================================================================
+2026-02-05 20:52:23 [INFO] 🖱️  Clicking [1/4]: Aging_Level
+2026-02-05 20:52:23 [INFO] ======================================================================
+2026-02-05 20:52:29 [INFO]   ! No navigation (modal?), same URL
+2026-02-05 20:52:29 [INFO] 
+======================================================================
+2026-02-05 20:52:29 [INFO] 🖱️  Clicking [2/4]: Aging_Level
+2026-02-05 20:52:29 [INFO] ======================================================================
+2026-02-05 20:52:35 [INFO]   ✓ NAVIGATED to: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/analyze?type=dote
+2026-02-05 20:52:35 [INFO] 
+📊 Extracting: Aging_Level
+2026-02-05 20:52:41 [INFO]   ✓ Text: 9,326 chars
+2026-02-05 20:52:41 [INFO]   ✓ URL: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/analyze?type=dote
+2026-02-05 20:52:41 [INFO]   ✓ Saved: 1_Aging_Level.json
+2026-02-05 20:52:44 [INFO]   ✓ Re-found 4 buttons
+2026-02-05 20:52:44 [INFO] 
+======================================================================
+2026-02-05 20:52:44 [INFO] 🖱️  Clicking [3/4]: Aging_Level
+2026-02-05 20:52:44 [INFO] ======================================================================
+2026-02-05 20:52:50 [INFO]   ! No navigation (modal?), same URL
+2026-02-05 20:52:50 [INFO] 
+======================================================================
+2026-02-05 20:52:50 [INFO] 🖱️  Clicking [4/4]: Skin_Analysis
+2026-02-05 20:52:50 [INFO] ======================================================================
+2026-02-05 20:52:56 [INFO]   ✓ NAVIGATED to: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/analyze?type=symptom
+2026-02-05 20:52:56 [INFO] 
+📊 Extracting: Skin_Analysis
+2026-02-05 20:53:03 [INFO]   ✓ Text: 8,570 chars
+2026-02-05 20:53:03 [INFO]   ✓ URL: https://eu-meicepro-api.meiquc.cn/meicepro-h5/pages/report/analyze?type=symptom
+2026-02-05 20:53:03 [INFO]   ✓ Saved: 2_Skin_Analysis.json
+2026-02-05 20:53:06 [INFO]   ✓ Re-found 4 buttons
+2026-02-05 20:53:06 [INFO] 
+================================================================================
+2026-02-05 20:53:06 [INFO] ✅ SCRAPING COMPLETE!
+2026-02-05 20:53:06 [INFO] ================================================================================
+2026-02-05 20:53:06 [INFO] 📁 Output: complete_data
+2026-02-05 20:53:06 [INFO] 📄 Data files: 3
+2026-02-05 20:53:06 [INFO] 📸 Screenshots: 3
+2026-02-05 20:53:06 [INFO] 🌐 API files: 3
+2026-02-05 20:53:06 [INFO] 
+⏸️  Browser stays open for 30 seconds...
