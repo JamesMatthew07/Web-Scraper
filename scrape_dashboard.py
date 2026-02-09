@@ -17,18 +17,21 @@ OUTPUT_DIR = Path('./complete_data')
 LOG_DIR = Path('./logs')
 TIMEOUT = 60000
 
-# Setup logging to both console and file
-LOG_DIR.mkdir(exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        logging.FileHandler(LOG_DIR / 'scraper.log', mode='w', encoding='utf-8'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
+
+
+def setup_logging():
+    """Configure logging with file and console handlers."""
+    LOG_DIR.mkdir(exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.FileHandler(LOG_DIR / 'scraper.log', mode='w', encoding='utf-8'),
+            logging.StreamHandler()
+        ]
+    )
 
 
 def parse_structured_data(text, section_name):
@@ -221,8 +224,9 @@ async def extract_section(page, section_name, section_num, output_dir):
     return data
 
 
-async def find_and_click_all_buttons(page, output_dir, section_start_num, api_requests):
+async def find_and_click_all_buttons(page, output_dir, section_start_num, api_requests, target_url=None):
     """Find ALL 'Visualizza di più' buttons and click them one by one"""
+    target_url = target_url or TARGET_URL
 
     # Find ALL elements with this text
     all_elements = await page.query_selector_all('*:has-text("Visualizza di più")')
@@ -360,7 +364,7 @@ async def find_and_click_all_buttons(page, output_dir, section_start_num, api_re
         except Exception as e:
             logger.error(f"❌ Error: {e}")
             try:
-                await page.goto(TARGET_URL, wait_until='networkidle', timeout=TIMEOUT)
+                await page.goto(target_url, wait_until='networkidle', timeout=TIMEOUT)
                 await asyncio.sleep(2)
             except:
                 pass
@@ -368,20 +372,40 @@ async def find_and_click_all_buttons(page, output_dir, section_start_num, api_re
     return section_num
 
 
-async def main():
+async def run_scraper(url=None, output_dir=None, headless=True):
+    """
+    Run the scraper and return the collected data.
+
+    Args:
+        url: Target URL to scrape (defaults to TARGET_URL)
+        output_dir: Output directory path (defaults to OUTPUT_DIR)
+        headless: Run browser in headless mode (defaults to True)
+
+    Returns:
+        dict with summary, section data, and api data
+    """
+    target_url = url or TARGET_URL
+    out_dir = Path(output_dir) if output_dir else OUTPUT_DIR
+    timeout = TIMEOUT
+
+    # Ensure logging is configured (no-op if already set up)
+    if not logging.getLogger().handlers:
+        setup_logging()
+
     logger.info("=" * 80)
-    logger.info("🎯 COMPLETE DASHBOARD SCRAPER")
+    logger.info("COMPLETE DASHBOARD SCRAPER")
     logger.info("=" * 80)
 
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    (OUTPUT_DIR / 'data').mkdir(exist_ok=True)
-    (OUTPUT_DIR / 'screenshots').mkdir(exist_ok=True)
-    (OUTPUT_DIR / 'api_data').mkdir(exist_ok=True)
+    out_dir.mkdir(exist_ok=True)
+    (out_dir / 'data').mkdir(exist_ok=True)
+    (out_dir / 'screenshots').mkdir(exist_ok=True)
+    (out_dir / 'api_data').mkdir(exist_ok=True)
 
     api_requests = []
+    section_results = []
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch(headless=headless)
         page = await browser.new_page()
         await page.set_viewport_size({'width': 1920, 'height': 1080})
 
@@ -405,56 +429,73 @@ async def main():
         page.on('response', capture_api)
 
         # Load main page
-        logger.info(f"\n📄 Loading: {TARGET_URL}")
-        await page.goto(TARGET_URL, wait_until='networkidle', timeout=TIMEOUT)
+        logger.info(f"\nLoading: {target_url}")
+        await page.goto(target_url, wait_until='networkidle', timeout=timeout)
         await asyncio.sleep(3)
 
         # Extract main page
-        await extract_section(page, "Main_Page", 0, OUTPUT_DIR)
+        main_data = await extract_section(page, "Main_Page", 0, out_dir)
+        section_results.append(main_data)
 
         # Save API data
+        main_page_apis = list(api_requests)
         for i, api in enumerate(api_requests):
-            api_file = OUTPUT_DIR / 'api_data' / f"0_main_page_api_{i+1}.json"
+            api_file = out_dir / 'api_data' / f"0_main_page_api_{i+1}.json"
             with open(api_file, 'w', encoding='utf-8') as f:
                 json.dump(api, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"  ✓ Captured {len(api_requests)} API requests from main page")
+        logger.info(f"  Captured {len(api_requests)} API requests from main page")
 
         # Find and click all buttons
-        final_section_num = await find_and_click_all_buttons(page, OUTPUT_DIR, 1, api_requests)
+        final_section_num = await find_and_click_all_buttons(page, out_dir, 1, api_requests, target_url=target_url)
+
+        # Load detail section data from saved files
+        for i in range(1, final_section_num):
+            data_files = list((out_dir / 'data').glob(f'{i}_*.json'))
+            for df in data_files:
+                with open(df, 'r', encoding='utf-8') as f:
+                    section_results.append(json.load(f))
 
         # Summary
-        json_files = list((OUTPUT_DIR / 'data').glob('*.json'))
-        screenshots = list((OUTPUT_DIR / 'screenshots').glob('*.png'))
-        api_files = list((OUTPUT_DIR / 'api_data').glob('*.json'))
+        json_files = list((out_dir / 'data').glob('*.json'))
+        screenshots = list((out_dir / 'screenshots').glob('*.png'))
+        api_files_list = list((out_dir / 'api_data').glob('*.json'))
 
         summary = {
             'scrape_timestamp': datetime.now().isoformat(),
-            'target_url': TARGET_URL,
+            'target_url': target_url,
             'total_sections': final_section_num,
             'files': {
                 'data': sorted([f.name for f in json_files]),
                 'screenshots': sorted([f.name for f in screenshots]),
-                'api_data': sorted([f.name for f in api_files])
+                'api_data': sorted([f.name for f in api_files_list])
             }
         }
 
-        with open(OUTPUT_DIR / 'summary.json', 'w', encoding='utf-8') as f:
+        with open(out_dir / 'summary.json', 'w', encoding='utf-8') as f:
             json.dump(summary, f, indent=2, ensure_ascii=False)
 
         logger.info("\n" + "=" * 80)
-        logger.info("✅ SCRAPING COMPLETE!")
+        logger.info("SCRAPING COMPLETE!")
         logger.info("=" * 80)
-        logger.info(f"📁 Output: {OUTPUT_DIR}")
-        logger.info(f"📄 Data files: {len(json_files)}")
-        logger.info(f"📸 Screenshots: {len(screenshots)}")
-        logger.info(f"🌐 API files: {len(api_files)}")
-
-        logger.info("\n⏸️  Browser stays open for 30 seconds...")
-        await asyncio.sleep(30)
+        logger.info(f"Output: {out_dir}")
+        logger.info(f"Data files: {len(json_files)}")
+        logger.info(f"Screenshots: {len(screenshots)}")
+        logger.info(f"API files: {len(api_files_list)}")
 
         await browser.close()
 
+    return {
+        'summary': summary,
+        'sections': section_results,
+        'api_responses': main_page_apis
+    }
+
+
+async def main():
+    return await run_scraper(headless=False)
+
 
 if __name__ == '__main__':
+    setup_logging()
     asyncio.run(main())
